@@ -1,0 +1,49 @@
+{% extends 'polldashboard/polldashboardlayout.html' %}
+
+{% block viewer %}
+   {% if status == "Active" %}
+      <div class="elecstart">
+			<center>
+				<h1 class="display-1">Election is Active</h1>
+				<h5 class="text-info">Election Target: <a href="{{link}}">{{link}}</a></h5>
+				<br><br>
+				<a href="{{link}}" class="btn btn-muted x">Go to Student Login</a>
+			</center>
+		</div>
+   {% else %}
+      <form method="POST" method="/" class='elecstart'>
+         <center>
+         <h1 class="display-1">{{poll.poll_name}}</h1>
+         <button class="btn btn-primary">Start Election</button>
+         </center>
+      </form>
+   {% endif %}
+{% endblock viewer %}
+
+{% block style %}
+<style>
+   {% if status == "Active" %}
+	.elecstart{
+      margin-top: 18%;
+   }
+	{% else %}
+	.elecstart{
+      margin-top: 21%;
+   }
+	{% endif %}
+   .x:hover{
+      background-color: {{school.accent_color}};
+      border: 1px solid {{school.accent_color}};
+	  opacity: 0.4;
+   }
+   .x{
+	   width: 43%;
+      color: white;
+	  background-color: {{school.accent_color}};
+      border: 1px solid {{school.accent_color}};
+   }
+</style>
+{% endblock style %}
+
+{% block scripts %}
+{% endblock scripts %}

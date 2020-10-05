@@ -1,0 +1,171 @@
+{%extends 'layout.html'%}
+{%block style%}
+<style>
+    body{
+        color: white;
+        padding: 20px;
+        background-color: black;
+    }
+    .topbar{
+        display: flex;
+    }
+    .namebar{
+        display: flex;
+    }
+    .siden{
+        margin-top: 28px;
+        margin-left: 15px;
+        opacity: 0.5;
+    }
+</style>
+{%endblock style%}
+{%block scripts%}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#inputfield").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#student_table_body tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+        });
+    });
+</script>
+{%endblock scripts%}
+{%block content%}
+<div class="namebar">
+<h1 class="display-1">Update Data</h1>
+<h1 class="display-4 siden">({{p_name}})</h1>
+</div>
+
+    <br>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} flashmessage" style="width:100%;">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="topbar">
+            <input type="text" class="form-control" id="inputfield" placeholder="Enter Student Name">
+        </div>
+        <br>
+        <table class="table table-striped table-dark restable" id="student_table">
+            {%if p_type == 'G-I2I'%}
+            <thead>
+                    <tr>
+                    <th scope="col">Sl.No</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">Roll No.</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Update</th>
+                    </tr>
+                </thead>
+                <tbody id="student_table_body">
+                    {% for student in students %}
+                        {%if not student.house and not student.gender%}
+                        <form action="" method="post">
+                            <tr>
+                                <td scope="row">{{loop.index}}</td>
+                                <td scope="row">{{student.full_name}}</td>
+                                <td class="align-middle">
+                                    {{student.username}}
+                                </td>
+                                <td class="align-middle">
+                                    {{student.password}}
+                                </td>
+                                <td class="align-middle">
+                                    {{student.grade}}
+                                </td>
+                                <td class="align-middle">
+                                    {{student.section}}
+                                </td>
+                                <td class="align-middle">
+                                    {{student.roll_no}}
+                                </td>
+                                <td class="align-middle">
+                                    <select name="gender" id="GenderBox" class="form-control">
+                                        <option value="">Choose</option>
+                                        <option value="{{student.id}}-M">Male</option>
+                                        <option value="{{student.id}}-F">Female</option>
+                                    </select>
+                                </td>
+                                <td class="align-middle">
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </td>
+                            </tr>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <thead>
+                        <tr>
+                        <th scope="col">Sl.No</th>
+                        <th scope="col">Student Name</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Section</th>
+                        <th scope="col">Roll No.</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">House</th>
+                        <th scope="col">Update</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student_table_body">
+                        {% for student in students %}
+                            {%if not student.house and not student.gender%}
+                            <form action="" method="post">
+                                <tr>
+                                    <td scope="row">{{loop.index}}</td>
+                                    <td scope="row">{{student.full_name}}</td>
+                                    <td class="align-middle">
+                                        {{student.username}}
+                                    </td>
+                                    <td class="align-middle">
+                                        {{student.password}}
+                                    </td>
+                                    <td class="align-middle">
+                                        {{student.grade}}
+                                    </td>
+                                    <td class="align-middle">
+                                        {{student.section}}
+                                    </td>
+                                    <td class="align-middle">
+                                        {{student.roll_no}}
+                                    </td>
+                                    <td class="align-middle">
+                                        <select name="gender" id="GenderBox" class="form-control">
+                                            <option value="">Choose</option>
+                                            <option value="{{student.id}}-M">Male</option>
+                                            <option value="{{student.id}}-F">Female</option>
+                                        </select>
+                                    </td>
+                                    <td class="align-middle">
+                                        <select name="house" id="HouseBox" class="form-control">
+                                            <option value="">Choose</option>
+                                            {%for house in houses%}
+                                                <option value="{{student.id}}-{{house}}">{{house}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td class="align-middle">
+                                        <button type="submit" class="btn btn-success">Update</button>
+                                    </td>
+                                </tr>
+                            </form>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+            {% endif %}
+           
+        </table>
+</form>
+{%endblock content%}

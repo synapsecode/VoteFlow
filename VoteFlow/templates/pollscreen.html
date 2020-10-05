@@ -1,0 +1,142 @@
+{% extends "screenlayout.html" %}
+
+{% block navbar %}
+   <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top mr-auto">
+      <a class="navbar-brand" href="#">VoteFlow</a>
+      <ul class="navbar-nav" >
+         <li class="nav-item">
+            <a class="nav-link" href="{{url_for('users.school_logout')}}">Logout</a>
+         </li>
+         <li class="nav-item">
+            <a class="nav-link" href="#">Account</a>
+         </li>
+      </ul>
+   </nav>
+{% endblock navbar %}
+
+{% block viewer %}
+   <form action="" method="post">
+      {% if activepolls or scheduledpolls or archivedpolls %}
+         {% if activepolls %}
+         <span class="sn">Active Polls <span class="poll-len">({{ activepolls|length }})</span></span>
+            <div class="pollbody">
+            {% for poll in activepolls %}
+            <div class="row">
+               <div class="col-lg">
+                  <div class="pollobject" onclick="window.location.href='{{url_for('polls.dashboard_home', school_abbr=poll.host, poll_id=poll.id)}}';">
+                     <h2>{{poll['poll_name']}}</h2>
+                     {% if poll['status'] == 'Active' %}
+                     <a href="{{url_for('election.splashscreen', school_abbr=poll.host, poll_id=poll.id)}}" class="btn btn-primary my-2">Go To Election Page</a><br>
+                     {% else %}
+                     <br>
+                     {% endif %}
+                     {{poll['year']}}
+                     <br>
+                     Active
+                     <br>
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+            </div>
+         {% endif %}
+         <br>
+
+         {% if scheduledpolls %}
+         <span class="sn">Scheduled Polls <span class="poll-len">({{ scheduledpolls|length }})</span></span>
+            <div class="pollbody">
+            {% for poll in scheduledpolls %}
+            <div class="row">
+               <div class="col-lg">
+                  <div class="pollobject" onclick="window.location.href='{{url_for('polls.dashboard_home', school_abbr=poll.host, poll_id=poll.id)}}';">
+                     <h2>{{poll['poll_name']}}</h2>
+                     <br>
+                     {{poll['year']}}
+                     <br>
+                     Scheduled
+                     <br>
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+            </div>
+         {% endif %}
+         <br>
+
+         {% if archivedpolls %}
+         <span class="sn">Archived Polls <span class="poll-len">({{ archivedpolls|length }})</span></span>
+            <div class="pollbody">
+            {% for poll in archivedpolls %}
+            <div class="row">
+               <div class="col-lg">
+                  <div class="pollobject" onclick="window.location.href='{{url_for('polls.resultspage', school_abbr=poll.host, poll_id=poll.id)}}';">
+                     <h2>{{poll['poll_name']}}</h2>
+                     <br>
+                     {{poll['year']}}
+                     <br>
+                     Archived
+                     <br>
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+            </div>
+         {% endif %}
+
+         {% else %}
+         <div class='nopolls'>
+            <center>
+            <h2>No Polls Available</h2>
+            <button class="btn btn-primary">Create Poll</button>
+            </center>
+         </div>
+      {% endif %}
+      {{ form.submit(class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect", id="newpoll") }}
+   </form>
+{% endblock viewer %}
+
+{% block additionalstyles %}
+   .pollbody{
+      margin: 10px;
+      margin-top: 20px; 
+   }
+   .nopolls{
+      margin-top: 24%;
+   }
+   .poll-len{
+      color: rgb(150,150,150);
+   }
+   .pollobject{
+      background-color: rgb(50,50,50);
+      padding: 20px;
+      border: 1px solid white;
+      margin: 5px;
+   }
+   .sn{
+      font-size: 5em;
+      margin: 0px;
+      padding: 20px;
+   }
+   #newpoll {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      width: 70px;
+      height: 70px;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+      color: rgb(255, 255, 255);
+      background-color: {{accent_color}};
+   }
+{% endblock additionalstyles %}
+
+<!-- Additional JavaScript Code -->
+{% block scripts %}
+   <script>
+      function testresponse(message){
+         alert(message);
+      }
+   </script>
+{% endblock scripts%}

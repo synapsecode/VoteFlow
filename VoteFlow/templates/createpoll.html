@@ -1,0 +1,123 @@
+{% extends "screenlayout.html" %}
+
+{% block navbar %}
+   <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top mr-auto">
+      <a class="navbar-brand" href="#">VoteFlow</a>
+      <ul class="navbar-nav" >
+         <li class="nav-item">
+            <a class="nav-link" href="{{url_for('users.school_logout')}}">Logout</a>
+         </li>
+         <li class="nav-item">
+            <a class="nav-link" href="#">Account</a>
+         </li>
+      </ul>
+   </nav>
+{% endblock navbar %}
+
+{% block display %}
+	<div class="content">
+		<img src="{{url_for('static', filename='DataStore/SchoolLogo/default.svg')}}" alt="" id="logo">
+		
+		<div class="holder">
+			<form action="" method="post">
+			{{ form.hidden_tag() }}
+				<fieldset class="form-group">
+					<center><h1 id="title">Create Poll</h1></center>
+					<div class="form-group">
+						{{ form.poll_name.label(class="form-control-label") }}
+						{% if form.poll_name.errors %}
+							{{ form.poll_name(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.poll_name.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.poll_name(class="form-control form-control-lg tb", placeholder="Poll Name") }}
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{{ form.poll_type.label(class="form-control-label") }}
+						{% if form.poll_type.errors %}
+							{{ form.poll_type(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.poll_type.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.poll_type(class="form-control form-control-lg tb", id="electype", onclick="RemoveHouses();") }}
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{{ form.houses.label(class="form-control-label", id="hlabel") }}
+						{% if form.houses.errors %}
+							{{ form.houses(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.houses.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.houses(class="form-control form-control-lg tb", placeholder="Houses",rows="5", id="houses") }}
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{{ form.positions.label(class="form-control-label") }}
+						{% if form.positions.errors %}
+							{{ form.positions(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.positions.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.positions(class="form-control form-control-lg tb", placeholder="Positions",rows="8") }}
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{{ form.year.label(class="form-control-label") }}
+						{% if form.year.errors %}
+							{{ form.year(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.year.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.year(class="form-control form-control-lg tb", placeholder="Year") }}
+						{% endif %}
+					</div>
+				</fieldset>
+			{{ form.submit(class="btn btn-success submit", id="newpoll") }}
+		</form>
+		</div>
+   </div>
+{% endblock display %}
+
+{% block additionalstyles %}
+.submit{
+	width: 100%;
+}
+.holder{
+	padding: 50px;
+	border: 1px solid grey;
+	margin: 20px;
+	flex: 1;
+	background-color: rgb(16,16,16);
+}
+.content{
+        display: flex;
+        flex-direction: row;
+    }
+#logo{
+        flex: 1;
+    }
+{% endblock additionalstyles %}
+
+<!-- Additional JavaScript Code -->
+{% block scripts %}
+<script>
+
+</script>
+{% endblock scripts%}

@@ -1,0 +1,48 @@
+{% extends 'polldashboard/polldashboardlayout.html' %}
+
+{% block viewer %}
+   <form method="POST" method="/" class='elecstart' enctype="multipart/form-data">
+   {{ form.hidden_tag() }}
+   {% if loaded %}
+      <center>
+         <br><h1 class="display-1">Nominees Already Added!</h1><br>
+      </center>
+   {% else %}
+      <center>
+      <h1 class="display-1">Add Nominees</h1>
+      {{form.nominees(class='btn btn-outline-success m-1 x')}}
+      <br><br>
+      <h1 class="display-1">Add Logo Bundle</h1>
+      {{form.nominees_logo(class='btn btn-outline-success m-1 x')}}
+      <br><br><br>
+      {{form.submit(class='btn btn-outline-success x', style="width: 50%;")}}
+      </center>
+   {% endif %}
+   </form>
+      
+{% endblock viewer %}
+
+{% block style %}
+<style>
+   {% if loaded %}
+   .elecstart{
+      margin-top: 21%;
+   }
+   {% else %}
+   .elecstart{
+      margin-top: 10%;
+   }
+   {% endif %}
+   .x:hover{
+      background-color: {{school.accent_color}};
+      border: 1px solid {{school.accent_color}};
+   }
+   .x{
+      color: white;
+      border: 1px solid {{school.accent_color}};
+   }
+</style>
+{% endblock style %}
+
+{% block scripts %}
+{% endblock scripts %}

@@ -1,0 +1,21 @@
+{% extends 'polldashboard/polldashboardlayout.html' %}
+
+{% block viewer %}
+	<form method="POST" method="/" class='elecstart'>
+    	<center>
+			<h1 class="display-1">Delete Poll</h1>
+			<button type="submit" class="btn btn-danger">Destroy this Poll</button>
+        </center>
+  	</form>
+{% endblock viewer %}
+
+{% block style %}
+<style>
+   .elecstart{
+      margin-top: 21%;
+   }
+</style>
+{% endblock style %}
+
+{% block scripts %}
+{% endblock scripts %}

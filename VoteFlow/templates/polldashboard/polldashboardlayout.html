@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>{{title}}</title>
+
+    <!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!--Custom CSS-->
+	<style>
+		body{
+			background-color: rgb(16,16,16);
+				color: white;
+		}
+		.sidenav {
+			height: 100%;
+			width: 300px;
+			position: fixed;
+			float: left;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			background-color: rgb(20,20,20);
+			overflow-x: hidden;
+			color: white;
+		}
+
+		.pollname{
+			opacity: 0.5;
+		}
+
+		.navcontent{
+			display: flex;
+			margin-left: 300px;
+		}
+
+		#arrow{
+			margin-right: 20px;
+			height: 40px;
+			width: 40px;
+		}
+
+		.sidenav a {
+			padding: 10px 30px;
+			text-decoration: none;
+			font-size: 20px;	
+			color: #818181;
+			display: block;
+		}
+
+		.sidenav img{
+			margin: 5px 10px;
+			height: 30px;
+			width: 30px;
+		}
+
+		main{
+			margin-left: 300px;
+			padding: 20px;
+		}
+
+		.sidenav a:hover {
+			color: #f1f1f1;
+		}
+
+		#sidebarlogo{
+			height: 100px;
+			width: 100px;
+		}
+
+		#vernum{
+			opacity: 0.4;
+		}
+
+		.topsection{
+			background-color: {{school.accent_color}};
+			padding: 50px;
+			margin-bottom: 20px;
+		}
+
+		@media screen and (max-height: 450px) {
+			.sidenav {padding-top: 15px;}
+			.sidenav a {font-size: 18px;}
+		}
+		.navmenu{
+			margin-left: 300px;
+		}
+		{% if flagged %}
+		.logo_watermark{
+			display:none;
+		}
+		{% else %}
+		.logo_watermark{
+			position:fixed;
+			bottom:150px;
+			right:100px;
+			opacity:0.05;
+			z-index:0;
+			color:white;
+			transform: scale(5);
+		}
+		{% endif %}
+		.flashmessage{
+			margin: 10px 10px 10px 310px;
+			width: calc(vw - 310px);
+		}
+		.x:hover{
+			background-color: {{school.accent_color}};
+			border: 1px solid {{school.accent_color}};
+		}
+		.x{
+			color: white;
+			background-color: {{school.accent_color}};
+			border: 1px solid {{school.accent_color}};
+		}
+	</style>
+	{% block style %}
+	{% endblock style %}
+	</head>
+	<body>
+		<div class="sidenav">
+			<div class="topsection">
+			<center><img src="{{url_for('static', filename='DataStore/SchoolLogo/')}}{{school.school_abbr}}.svg" alt="" id="sidebarlogo"></center>
+			<center><h1>VoteFlow</h1></center>
+			<center><h5 id="vernum">(v0.1.0)</h5></center>
+			</div>
+			<a href="{{url_for('polls.updatedata', school_abbr=school.school_abbr, poll_id=poll.id)}}"><img src="https://img.icons8.com/color/48/000000/gears.png"> Update Data</a>
+			<a href="{{url_for('polls.add_students', school_abbr=school.school_abbr, poll_id=poll.id)}}"><img src="https://img.icons8.com/color/48/000000/add-user-group-woman-man.png"> Add Students</a>
+			<a href="{{url_for('polls.add_nominees', school_abbr=school.school_abbr, poll_id=poll.id)}}"><img src="https://img.icons8.com/color/48/000000/conference.png"> Add Nominees</a>
+			<a href="{{url_for('polls.deletepoll', school_abbr=school.school_abbr, poll_id=poll.id)}}"><img src="https://img.icons8.com/color/48/000000/delete.png"> Delete Poll</a>
+			<a href="{{url_for('polls.startelection', school_abbr=school.school_abbr, poll_id=poll.id)}}"><img src="https://img.icons8.com/color/48/000000/poll-topic.png"> Start Election</a>
+			<a href="{{url_for('polls.results', school_abbr=school.school_abbr, poll_id=poll.id)}}"><img src="https://img.icons8.com/color/48/000000/podium-with-speaker.png"> Election Results</a>
+		</div>
+		<div>
+		{% block navbar %}
+			<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top navmenu">
+			<a href="{{url_for('polls.pollscreen', school_abbr=school.school_abbr)}}" class="btn btn-muted x mx-2">All Polls</a>
+				<img src="https://img.icons8.com/color/48/000000/circled-left.png" id="arrow" onclick="window.history.back();">
+				<a class="navbar-brand" href="#">{{school.schoolname}} > <span class="pollname">{{poll.poll_name}}</span></a>
+				<ul class="navbar-nav">
+					<div class="navcontent">
+						<a class="nav-link" href="{{url_for('users.school_logout')}}">Logout</a>
+						<a class="nav-link" href="#">Account</a>
+					</div>
+				</ul>
+			</nav>
+		{% endblock navbar %}
+
+		<!--FLASH MESSAGING-->
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					<div class="alert alert-{{ category }} flashmessage">
+						{{ message }}
+					</div>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+
+		<!--VIEW WINDOW-->
+		<main>
+			{% block viewer %}
+
+			{% endblock viewer %}
+			<img src="{{url_for('static', filename='DataStore/SchoolLogo/default.svg')}}" alt="" class="logo_watermark">
+		</main>
+		</div>
+	</body>
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<!--Custom JS Scripts-->
+	{% block scripts %}
+	{% endblock scripts %}
+</html>

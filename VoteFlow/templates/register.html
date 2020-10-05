@@ -1,0 +1,165 @@
+{% extends "layout.html" %}
+
+<!-- Main Body Code -->
+{% block content %}
+<img src="{{url_for('static', filename='DataStore/SchoolLogo/default.svg')}}" alt="" id="logo">
+    <div class="formholder">
+    
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+         <fieldset class="form-group">
+                 <center><h1 id="title">Create Account</h1></center><br>
+                <div class="form-group">
+                    {{ form.school_name.label(class="form-control-label") }}
+                    {% if form.school_name.errors %}
+                        {{ form.school_name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.school_name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.school_name(class="form-control form-control-lg tb", placeholder="School Name") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.school_abbr.label(class="form-control-label") }}
+                    {% if form.school_abbr.errors %}
+                        {{ form.school_abbr(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.school_abbr.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.school_abbr(class="form-control form-control-lg tb", placeholder="School Abbreviation") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.school_logo.label(class="form-control-label") }}
+                    {{ form.school_logo(class="form-control tb") }}
+                </div>
+                <div class="form-group">
+                    {{ form.username.label(class="form-control-label") }}
+                    {% if form.username.errors %}
+                        {{ form.username(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.username(class="form-control form-control-lg tb", placeholder="Username") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg tb", placeholder="Email") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label(class="form-control-label") }}
+                    {% if form.password.errors %}
+                        {{ form.password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.password(class="form-control form-control-lg tb", placeholder="Password") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.confirm_password.label(class="form-control-label") }}
+                    {% if form.confirm_password.errors %}
+                        {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.confirm_password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.confirm_password(class="form-control form-control-lg tb", placeholder="Confirm Password") }}
+                    {% endif %}
+                </div><br>
+                <center>
+                <div class="form-check">
+                    <h3>{{ form.accent_color.label(class="form-check-label") }} <span>(click to change color)</span></h3>
+                    {{ form.accent_color(class="cp") }}
+                </div>
+                </center>
+            </fieldset><br>
+            <div class="form-group">{{ form.submit(class="btn btn-success submit") }}</div>
+             <div>
+             <center>
+             <small class="text-muted">
+                    Already Have An Account? <a class="ml-2" href="{{ url_for('users.school_login') }}">Log In</a>
+                </small>
+             </center>
+                
+            </div>
+    </form>
+    </div>
+{% endblock content %}
+
+<!-- Additional JavaScript Code -->
+{% block lastscripts %}
+{% endblock lastscripts%}
+
+<!-- Additional CSS Code -->
+{% block style %}
+    <style type="text/css">
+    body{
+        display: flex;
+        flex-direction: row;
+        background-color: rgb(16,16,16);
+        color: white;
+    }
+
+    /*
+    .tb{
+        background-color:rgb(32,32,32);
+        color: white;
+    }
+    .tb:active{
+        background-color:rgb(40,40,40);
+        color: white;
+    }
+    .tb:focus{
+        background-color:rgb(40,40,40);
+        color: white;
+    }
+    */
+
+    .formholder{
+        padding: 40px;
+        margin: 20px;
+        flex: 9;
+    }
+    #logo{
+        padding: 20px;
+        flex: 10;
+    }
+    .cp{
+        height: 60px;
+        width: 440px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 5px;
+        color: grey;
+        background-color: grey;
+    }
+    .submit{
+        width: 100%;
+    }
+    </style>
+{% endblock style%}

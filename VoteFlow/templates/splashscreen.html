@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+<!-- Main Body Code -->
+{% block content %}
+    <div class="logo">
+        <img src="https://img.icons8.com/color/96/000000/elections.png">
+    </div>
+{% endblock content %}
+
+<!-- Additional JavaScript Code -->
+{% block scripts %}
+    <script>
+        window.onload = function() {
+            setTimeout(()=> window.location = "{{url_for('users.school_login')}}", 5000);
+        }
+    </script>
+{% endblock scripts%}
+
+<!-- Additional CSS Code -->
+{% block style %}
+    <style type="text/css">
+        .logo {
+            height: 5.5em;
+            width: 6.5em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -55px; /* Half the height */
+            margin-left: -55px; /* Half the width */
+         }
+    </style>
+{% endblock style%}

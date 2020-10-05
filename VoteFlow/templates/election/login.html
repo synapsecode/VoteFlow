@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+<!-- Main Body Code -->
+{% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} flashmessage" style="width:100%;">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="content">
+        <img src="{{url_for('static', filename='DataStore/SchoolLogo/')}}{{school.school_abbr}}.svg" alt="" id="logo">
+            <div class="formholder">
+            <form method="POST" action="" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <center><h1 class="display-4">{{poll_name}}</h1></center><br>
+                    <div class="form-group">
+                        {{ form.username.label(class="form-control-label") }}
+                        {% if form.username.errors %}
+                            {{ form.username(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.username(class="form-control form-control-lg", placeholder="Username") }}
+                        {% endif %}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        {{ form.password.label(class="form-control-label") }}
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.password(class="form-control form-control-lg", placeholder="Password") }}
+                        {% endif %}
+                        <small>Your password is your Class, Section and Roll Number joined together</small>
+                    </div>
+                </fieldset>
+                <div class="form-group">{{ form.submit(class="btn btn-success submit") }}</div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Additional CSS Code -->
+{% block style %}
+    <style type="text/css">
+    body{
+        background-color: rgb(16,16,16);
+        color: white;
+		padding: 20px;
+    }
+    .content{
+        display: flex;
+        flex-direction: row;
+    }
+    #title{
+        font-size: 50px;
+    }
+    .formholder{
+        padding: 80px;
+        margin: 5px;
+        flex: 9;
+		margin-top:120px;
+    }
+    .submit{
+        width: 100%;
+    }
+    #logo{
+		margin-top: 10px;
+        padding: 20px;
+        flex: 9;
+    }
+    </style>
+{% endblock style%}

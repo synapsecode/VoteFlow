@@ -1,0 +1,44 @@
+{% extends 'polldashboard/polldashboardlayout.html' %}
+
+{% block viewer %}
+	 <form method="POST" method="/" class='elecstart' enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      <center>
+      {% if loaded %}
+         <h1 class="display-1">Add Students</h1>
+         {{form.students(class='btn btn-info mr-3')}}
+         {{form.submit(class='btn btn-primary')}}
+         </center>
+   </form>
+   {% else %}
+         <center>
+            <br><h1 class="display-1">Students Already Added!</h1><br>
+         </center>
+   {% endif %}
+   {% if flagged %}
+      <center>
+         <br><h1 class="display-1">Flagged Usernames ( <span class="count">{{flagged | length}}</span> )</h1><br>
+         <a href="{{url_for('polls.edit_flagged_students', school_abbr=school.school_abbr, poll_id=poll.id)}}" class="btn btn-danger" style="width: 40%;">Edit</a>
+      </center>
+   {% endif %}
+{% endblock viewer %}
+
+{% block style %}
+<style>
+   {% if flagged %}
+   .elecstart{
+      margin-top: 10%;
+   }
+   {% else %}
+   .elecstart{
+      margin-top: 21%;
+   }
+   {% endif %}
+   .count{
+      opacity: 0.4;
+   }
+</style>
+{% endblock style %}
+
+{% block scripts %}
+{% endblock scripts %}

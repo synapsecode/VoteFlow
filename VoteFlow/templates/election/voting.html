@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+<!-- Main Body Code -->
+{% block content %}
+   <div class="container">
+   <center>
+   <br>
+   <h1 class="display-2">Welcome {{student.full_name}}</h1>
+   <p class="text-primary steps">Please Select One Candidate From Each Row of the Given Table. Once You have made the final decision, 
+   Scroll Down to find a submit button and click on it! Your Vote will be casted.</p>
+   	<br>
+	<form action="" method="post">
+		<table class="table table-striped table-dark electable">
+		<thead>
+			<tr>
+			<th scope="col">Nominee Logo</th>
+			<th scope="col">Slogan</th>
+			<th scope="col">Specific Post</th>
+			<th scope="col">Select Nominee</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for obj in nominees %}
+				<tr>
+					<th scope="row"><img id="logo-{{obj['post'][1:-1]}}" class="timg" src="{{url_for('static', filename='DataStore/default.jpg')}}" alt=""></th>
+					<td class="align-middle" id="slogan-{{obj['post'][1:-1]}}">Select Candidate</td>
+					{% if obj['post'][1:-1] == 'HOUSE VICE CAPTAIN' %}
+					<td class="align-middle">{{student.house}} {{obj['post'][1:-1]}}</td>
+					{% else %}
+					<td class="align-middle">{{obj['post'][1:-1]}}</td>
+					{% endif %}
+					<td class="align-middle">
+						<select id="{{obj['post'][1:-1]}}" name="{{obj['post'][1:-1]}}" class="form-control mr-2" onclick="{{obj['post'][1:-1].replace(' ', '_')}}(value);" size="7">
+							{% for nominee in obj['nominees'] %}
+								<option value="{{nominee['nominee'].id}}">{{nominee['nominee'].full_name}}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<button type="submit" class="btn btn-primary" style="width: 100%;" id="submit">Cast Vote</button>
+	<br>
+	</form>
+   </div>
+</center>
+{% endblock content %}
+
+<!-- Additional JavaScript Code -->
+{% block scripts %}
+<script type="text/javascript">
+	var HttpClient = function() {
+		this.get = function(aUrl, aCallback) {
+			var anHttpRequest = new XMLHttpRequest();
+			anHttpRequest.onreadystatechange = function() { 
+				if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+					aCallback(anHttpRequest.responseText);
+			}
+
+			anHttpRequest.open( "GET", aUrl, true );            
+			anHttpRequest.send( null );
+		}
+	}
+	{% for post in posts %}
+		function {{post[1:-1].replace(' ', '_')}}(nominee_id) {
+			var link = "http://{{request.host}}/{{school.school_abbr}}/election/{{poll.id}}/getnomineedata/" + nominee_id;
+			var client = new HttpClient();
+			client.get(link, function(response) {
+				var res = JSON.parse(response);
+				document.getElementById('slogan-{{post[1:-1]}}').innerHTML = res.slogan.toUpperCase();
+				document.getElementById('logo-{{post[1:-1]}}').src = res.logo_url;
+			});
+		}
+	{% endfor %}
+</script>
+{% endblock scripts%}
+
+<!-- Additional CSS Code -->
+{% block style %}
+   <style>
+   body{
+	  background-image: url_for('static', filename='Images/background.jpg');
+	  background-color: rgb(16,16,16);
+	   color: white;
+   }
+   .electable{
+	   width: 1100px;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+   }
+   .container{
+	   margin-bottom: 20px;
+   }
+   .steps{
+	   font-size: 20px;
+	   padding: 0px 100px;
+	   line-height: 25px;
+   }
+   .timg{
+	   height: 140px;
+	   width: 140px;
+	   border: 2px solid black;
+   }
+   </style>
+{% endblock style%}

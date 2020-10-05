@@ -1,0 +1,22 @@
+{% extends 'polldashboard/polldashboardlayout.html' %}
+
+{% block viewer %}
+	<form class="mainbox" action="" method="POST">
+		<center>
+			<h1 class="display-1">Display Results</h1>
+			<p class="text-danger">( The Poll will be Stopped. Nobody can vote after this step! )</p>
+			<button type="submit" class="btn btn-danger">End Poll and Show Results</button>
+		</center>
+	</form>
+{% endblock viewer %}
+
+{% block style %}
+<style>
+	.mainbox{
+      margin-top: 20%;
+   }
+</style>
+{% endblock style %}
+
+{% block scripts %}
+{% endblock scripts %}

@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+<!-- Main Body Code -->
+{% block content %}
+    <div class="logo">
+        <img src="{{url_for('static', filename='DataStore/SchoolLogo/') + school.school_abbr + ".svg"}}">
+    </div>
+{% endblock content %}
+
+<!-- Additional JavaScript Code -->
+{% block scripts %}
+    <script>
+        window.onload = function() {
+            setTimeout(()=> window.location = "{{url_for('election.studentlogin', school_abbr=school.school_abbr, poll_id=poll.id)}}", 5000);
+        }
+    </script>
+{% endblock scripts%}
+
+<!-- Additional CSS Code -->
+{% block style %}
+    <style type="text/css">
+        .logo {
+            height: 5.5em;
+            width: 6.5em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -55px; /* Half the height */
+            margin-left: -55px; /* Half the width */
+         }
+    </style>
+{% endblock style%}

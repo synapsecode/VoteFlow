@@ -1,0 +1,200 @@
+{% extends "layout.html" %}
+
+<!-- Main Body Code -->
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} flashmessage" style="width:100%;">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="content">
+        {% if res %}
+            <center>
+                <h2 class="display-1">Election Results</h2>
+            <form action="" method="POST">
+                <a href="{{url_for('polls.downloadelectionsummary', school_abbr=school, poll_id=poll_id)}}" class="btn btn-danger">Download Election Summary</a>
+                <a href="{{url_for('polls.download_absentee_voters_list', school_abbr=school, poll_id=poll_id)}}" class="btn btn-danger ml-2">Download Absentee Voters List</a>
+                <input type="text" class="form-control" id="searchtag" placeholder="Search">
+            </form> 
+            {% if polltype == 'A2A' %}
+                <table class="table table-striped table-dark restable">
+                    <thead>
+                        <tr>
+                        <th scope="col">Winner Name</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Votes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result_table">
+                        {% for x in res %}
+                            <tr>
+                                <td scope="row">{{x.full_name}}</td>
+                                <td class="align-middle">
+                                    {{x.post[1:-1]}}
+                                </td>
+                                <td class="align-middle">
+                                    {{x.votes}}
+                                </td>
+                            </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% elif polltype == 'G-I2I' %}
+                <table class="table table-striped table-dark restable">
+                    <thead>
+                        <tr>
+                        <th scope="col">Winner Name</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Votes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result_table">
+                        {% for x in res %}
+                            <tr>
+                                <td scope="row">{{x.full_name}}</td>
+                                <td class="align-middle">
+                                    {% if x.post.split('-')[0][1:-1] == 'M'%}
+                                        BOY
+                                    {% elif x.post.split('-')[0][1:-1] == 'F'%}
+                                        GIRL
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    {{x.post.split('-')[1][1:-1]}}
+                                </td>
+                                <td class="align-middle">
+                                    {{x.votes}}
+                                </td>
+                            </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% elif polltype == 'H-I2I' %}
+                <table class="table table-striped table-dark restable">
+                    <thead>
+                        <tr>
+                        <th scope="col">Winner Name</th>
+                        <th scope="col">House</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Votes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result_table">
+                        {% for x in res %}
+                            <tr>
+                                <td scope="row">{{x.full_name}}</td>
+                                <td class="align-middle">
+                                    {% if x.post.split('-')[0][1:-1] != 'ANY'%}
+                                        {{x.post.split('-')[0][1:-1]}}
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    {{x.post.split('-')[1][1:-1]}}
+                                </td>
+                                <td class="align-middle">
+                                    {{x.votes}}
+                                </td>
+                            </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% elif polltype == 'GH-I2I' %}
+                <table class="table table-striped table-dark restable">
+                    <thead>
+                        <tr>
+                        <th scope="col">Winner Name</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">House</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Votes</th>
+                        </tr>
+                    </thead>
+                <tbody id="result_table">
+                   {% for x in res %}
+                    <tr>
+                        <td scope="row">{{x.full_name}}</td>
+                        <td class="align-middle">
+                            {% if x.post.split('-')[1][1:-1] == 'M'%}
+                                BOY
+                            {% elif x.post.split('-')[1][1:-1] == 'F'%}
+                                GIRL
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">
+                            {% if x.post.split('-')[0][1:-1] != 'ANY'%}
+                                {{x.post.split('-')[0][1:-1]}}
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">
+                            {{x.post.split('-')[2][1:-1]}}
+                        </td>
+                        <td class="align-middle">
+                            {{x.votes}}
+                        </td>
+                    </tr>
+                   {% endfor %}
+            </tbody>
+	        </table>
+            {% endif %}       
+        {% endif %}
+        </center>
+    </div>
+    <script>
+        $(document).ready(function(){
+        $("#searchtag").on("keyup", function() {
+            console.log('KEYUP');
+            var value = $(this).val().toLowerCase();
+            $("#result_table tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+        });
+    </script>
+{% endblock content %}
+
+<!-- Additional CSS Code -->
+{% block style %}
+    <style type="text/css">
+    body{
+        background-color: rgb(16,16,16);
+        background-image: url_for('static', filename='Images/background.jpg');
+        color: white;
+		padding: 20px;
+    }
+    #title{
+        font-size: 50px;
+    }
+    .restable{
+        width: 1200px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    #searchtag{
+        margin: 20px 0px;
+        width: 800px;
+    }
+    .formholder{
+        padding: 80px;
+        margin: 5px;
+        flex: 9;
+		margin-top:60px;
+    }
+    .submit{
+        width: 100%;
+    }
+    #logo{
+		margin-top: 10px;
+        padding: 20px;
+        flex: 9;
+    }
+    .sideview{
+        display: flex;
+        padding: 20px;
+    }
+    </style>
+{% endblock style%}

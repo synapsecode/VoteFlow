@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+<!-- Main Body Code -->
+{% block content %}
+   <!--NAVIGATION BAR-->
+   {% block navbar %}
+   {% endblock navbar %}
+   {% if nocontainer %}
+      <!--FLASH MESSAGING-->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} flashmessage" style="width:100%;">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <!--VIEW WINDOW-->
+      {% block display %}
+      {% endblock display %}
+   {% else %}
+   <div class="container">
+      <!--FLASH MESSAGING-->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} flashmessage" style="width:100%;">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <!--VIEW WINDOW-->
+      {% block viewer %}
+      {% endblock viewer %}
+   </div>
+   {% endif %}
+{% endblock content%}
+
+{% block style %}
+<style>
+   .container{
+      padding: 10px;
+   }
+
+   body{
+      background-color: rgb(16,16,16);
+      color: white;
+   }
+   {% block additionalstyles %}
+   {% endblock additionalstyles %}
+</style>
+{% endblock style %}
