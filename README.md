@@ -31,4 +31,6 @@ This project was a big success and after that I moved onto something else. Howev
 ## Outcome
 I used Voteflow to run my School Cabinet Election for the year 2019. It was a massive success. Completely Flawless and as a result, I was felicitated by my School **St Paul's English School, Bangalore**.
 
-**Here is the Felicitation Certificate**
+# Here is the Felicitation Certificate
+
+![](https://github.com/synapsecode/VoteFlow/blob/main/ExampleVotingData/felit.jpg)
